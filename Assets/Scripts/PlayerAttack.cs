@@ -16,6 +16,7 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        //Checks if theres a cooldown and player is grounded before throwing a projectile
         if (Input.GetKey(KeyCode.Mouse0) && cooldownTimer > attackCooldown && playerMovement.canAttack())
             Attack();
 

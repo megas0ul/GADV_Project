@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
     {
         if (hit) return;
         float movementSpeed = projectileSpeed * Time.deltaTime * direction;
-        transform.Translate(movementSpeed, 0, 0); 
+        transform.Translate(movementSpeed, 0, 0); //Makes the Projectile fly in a straight line
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

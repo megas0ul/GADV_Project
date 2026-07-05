@@ -35,21 +35,23 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         body.linearVelocity = new Vector2(body.linearVelocity.x, jump_speed);
+        //Makes the player move upwards
     }
 
-    private void OnCollisionEnter2D(Collision2D other) //Check if player is on the ground
+    private void OnCollisionEnter2D(Collision2D other) //Check if player is on solid ground
     {
         if (other.gameObject.CompareTag("Ground"))
         {
             Vector3 normal = other.GetContact(0).normal;
             if(normal == Vector3.up)
             {
-            grounded = true;
+            grounded = true; 
             }
         }
         else if (other.gameObject.CompareTag("Trap"))
         {
             transform.position = new Vector2(-7f, -3.55f);
+            //Teleports player back to start point when collide with trap
         }
     }
 
@@ -61,12 +63,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void takeDamage()
+    private void takeDamage() //Use when health is implemented
     {
 
     }
 
-    public bool canAttack()
+    public bool canAttack() //Check if player is not moving and is grounded before letting them attack.
     {
         return horizontalInput == 0 && grounded;
     }
