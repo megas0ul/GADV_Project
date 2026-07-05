@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Trap"))
         {
-            transform.position = Vector2.zero;
+            transform.position = new Vector2(-7f, -3.55f);
         }
     }
 
