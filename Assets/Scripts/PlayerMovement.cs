@@ -7,12 +7,12 @@ public class PlayerMovement : MonoBehaviour
     //public LayerMask groundLayer; Test usings layers vs tags / Might use raycasting
     //public LayerMask wallLayer;
     //public LayerMask trapLayer;
-    public float speed = 8f;
-    public float jump_speed = 15f;
+    [SerializeField]private float speed = 8f;
+    [SerializeField]private float jump_speed = 15f;
     private bool grounded;
     private float horizontalInput;
         
-    private void Awake()
+    private void Awake()    
     {
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public float attackCooldown;
-    public Transform projectilePoint;
-    public GameObject[] projectiles;
+    [SerializeField]private float attackCooldown;
+    [SerializeField]private Transform projectilePoint;
+    [SerializeField]private GameObject[] projectiles;
     private PlayerMovement playerMovement;
     private float cooldownTimer = Mathf.Infinity; //Any big number can be used for this
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -34,7 +34,7 @@ public class PlayerAttack : MonoBehaviour
 
     private int FindProjectile()
     {
-        for (int i = 0; i < projectiles.Length; i++) //loop through every fireball
+        for (int i = 0; i < projectiles.Length; i++) //loop through every projectile
         {
             if (!projectiles[i].activeInHierarchy) //Check if projectile is active 
                 return i;

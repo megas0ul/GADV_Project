@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float projectileSpeed;
+    [SerializeField]private float projectileSpeed;
     private float direction;
     private bool hit;
 
