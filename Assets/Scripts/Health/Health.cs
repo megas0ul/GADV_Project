@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public float maxHealth;
-    private float currentHealth;
-    void Start()
+    [SerializeField]private float maxHealth;
+    public float currentHealth { get; private set; }
+    private void Awake()
     {
         currentHealth = maxHealth;
     }
@@ -27,6 +27,7 @@ public class Health : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.E))
+            TakeDamage(1);
     }
 }
