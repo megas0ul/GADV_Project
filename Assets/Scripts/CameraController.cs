@@ -5,7 +5,6 @@ public class CameraController : MonoBehaviour
     [SerializeField]private float speed;
     private float currentPosX;
     private Vector3 velocity = Vector3.zero;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
         transform.position = Vector3.SmoothDamp(transform.position, new Vector3(currentPosX, transform.position.y, transform.position.z), 
