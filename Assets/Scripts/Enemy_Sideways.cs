@@ -11,14 +11,4 @@ public class Enemy_Sideways : MonoBehaviour
             collision.GetComponent<Health>().TakeDamage(damage);
         }
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

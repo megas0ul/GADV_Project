@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     //public LayerMask wallLayer;
     //public LayerMask trapLayer;
     [SerializeField]private float speed = 8f;
-    [SerializeField]private float jump_speed = 15f;
+    [SerializeField]private float jump_speed = 10f;
     private bool grounded;
     private float horizontalInput;
         
@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         else if (other.gameObject.CompareTag("Trap"))
         {
             transform.position = new Vector2(-7f, -3.55f);
+            GetComponent<Health>().TakeDamage(1);
             //Teleports player back to start point when collide with trap
         }
     }
@@ -61,11 +62,6 @@ public class PlayerMovement : MonoBehaviour
         {
             grounded = false; 
         }
-    }
-
-    private void takeDamage() //Use when health is implemented
-    {
-
     }
 
     public bool canAttack() //Check if player is not moving and is grounded before letting them attack.
