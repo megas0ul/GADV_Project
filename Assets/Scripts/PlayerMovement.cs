@@ -4,12 +4,12 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D body;
     private BoxCollider2D boxCollider;
-    //public LayerMask groundLayer; Test usings layers vs tags / Might use raycasting
-    //public LayerMask wallLayer;
+    [SerializeField]private LayerMask groundLayer;
+    [SerializeField]private LayerMask wallLayer;
     //public LayerMask trapLayer;
     [SerializeField]private float speed = 8f;
     [SerializeField]private float jump_speed = 10f;
-    private bool grounded;
+    [SerializeField]private float wallJumpCooldown = 0.2f;
     private float horizontalInput;
         
     private void Awake()    
@@ -22,33 +22,56 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");//Check left (A key) or right input (D)
-        //Calculate speed moving left or right
-        body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
-        if (horizontalInput > 0.01f) 
-            transform.localScale = Vector2.one;
-        else if (horizontalInput < -0.01f)
-            transform.localScale = new Vector2 (-1, 1); //Flip sprite when moving left/right
 
-        if (Input.GetKey(KeyCode.Space) && grounded == true)
-            Jump();
+        if (horizontalInput > 0.01f) 
+            transform.localScale = Vector3.one;
+        else if (horizontalInput < -0.01f)
+            transform.localScale = new Vector3 (-1, 1, -1); //Flip sprite when moving left/right
+
+        
+        if (wallJumpCooldown > 0.2f)
+        {
+            body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
+
+            if (onWall() && isGrounded())
+            {
+                body.gravityScale = 0;
+                body.linearVelocity = Vector2.zero;
+            }
+
+            else
+                body.gravityScale = 2;
+            
+            if (Input.GetKey(KeyCode.Space))
+                Jump();
+        }
+        else
+            wallJumpCooldown += Time.deltaTime;
+    
     }
-    private void Jump()
+    private void Jump() //Makes the player move upwards 
     {
-        body.linearVelocity = new Vector2(body.linearVelocity.x, jump_speed);
-        //Makes the player move upwards
+        if(isGrounded())
+        {
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jump_speed);
+        }
+        else if (onWall() && !isGrounded()) //Wall Jump
+            {
+                if (horizontalInput == 0)
+                {
+                    body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
+                    transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+                else
+                body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 4, 6); //Returns 1 when player is facing right and -1 when facing left
+                wallJumpCooldown = 0;
+            }
+       
     }
 
     private void OnCollisionEnter2D(Collision2D other) //Check if player is on solid ground
     {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            Vector3 normal = other.GetContact(0).normal;
-            if(normal == Vector3.up)
-            {
-            grounded = true; 
-            }
-        }
-        else if (other.gameObject.CompareTag("Trap"))
+        if (other.gameObject.CompareTag("Trap"))
         {
             transform.position = new Vector2(-7f, -3.55f);
             GetComponent<Health>().TakeDamage(1);
@@ -56,16 +79,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other) //Check if player is on the ground
+    private bool isGrounded()//Check if player is on the ground
     {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            grounded = false; 
-        }
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        return raycastHit.collider != null;
+    }
+    private bool onWall()//Check if player is on the wall
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
+        return raycastHit.collider != null;
     }
 
     public bool canAttack() //Check if player is not moving and is grounded before letting them attack.
     {
-        return horizontalInput == 0 && grounded;
+        return isGrounded();
     }
 }
