@@ -1,9 +1,15 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    [Header ("Health")]
     [SerializeField]private float maxHealth;
     public float currentHealth { get; private set; }
+    private bool dead;
+
+    [Header ("Components")]
+    [SerializeField] private Behaviour[] components;
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -16,18 +22,30 @@ public class Health : MonoBehaviour
 
         if (currentHealth > 0)
         {
-            // player loses health
+            // Hurt animation TBD
         }
         else
         {
-            //Game Over
+            if (!dead)
+            {
+                //Deactivates all attached components
+                foreach(Behaviour component in components)
+                    component.enabled = false;
+                Deactivate();
+                dead = true;
+            }
         }
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if(Input.GetKeyDown(KeyCode.E))
             TakeDamage(1);
+    }
+
+    private void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 }

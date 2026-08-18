@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -26,6 +27,9 @@ public class Projectile : MonoBehaviour
         hit = true;
         boxCollider.enabled = false;
         gameObject.SetActive(false);
+
+        if(collision.tag == "Enemy")
+            collision.GetComponent<Health>().TakeDamage(1); //Deal damage to enemy
     }
 
     public void SetDirection(float _direction)
