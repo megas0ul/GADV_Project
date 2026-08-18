@@ -1,10 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
     [Header ("Health")]
     [SerializeField]private float maxHealth;
+    [SerializeField]private float startingHealth = 5f;
     public float currentHealth { get; private set; }
     private bool dead;
 
@@ -12,7 +12,7 @@ public class Health : MonoBehaviour
     [SerializeField] private Behaviour[] components;
     private void Awake()
     {
-        currentHealth = maxHealth;
+        currentHealth = startingHealth;
     }
 
     public void TakeDamage(float _damage)
@@ -38,10 +38,17 @@ public class Health : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    public void AddHealth(float _value)
     {
-        if(Input.GetKeyDown(KeyCode.E))
-            TakeDamage(1);
+        currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
+    }
+    public void Respawn()
+    {
+        dead = false;
+        AddHealth(startingHealth);
+        foreach(Behaviour component in components)
+            component.enabled = true;
+
     }
 
     private void Deactivate()

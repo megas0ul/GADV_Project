@@ -10,12 +10,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]private float speed = 8f;
     [SerializeField]private float jump_speed = 10f;
     [SerializeField]private float wallJumpCooldown = 0.2f;
+    private Health playerHealth;
+    private PlayerRespawn playerRespawn;
     private float horizontalInput;
         
     private void Awake()    
     {
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        playerHealth = GetComponent<Health>();
+        playerRespawn = GetComponent<PlayerRespawn>();
     }
 
     // Update is called once per frame
@@ -69,13 +73,11 @@ public class PlayerMovement : MonoBehaviour
        
     }
 
-    private void OnCollisionEnter2D(Collision2D other) //Check if player is on solid ground
+    private void OnCollisionEnter2D(Collision2D other) //Do damage to the player when colliding with traps
     {
         if (other.gameObject.CompareTag("Trap"))
         {
-            transform.position = new Vector2(-7f, -3.55f);
-            GetComponent<Health>().TakeDamage(1);
-            //Teleports player back to start point when collide with trap
+            playerHealth.TakeDamage(1);         
         }
     }
 
