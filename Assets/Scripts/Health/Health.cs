@@ -28,6 +28,7 @@ public class Health : MonoBehaviour
         {
             if (!dead)
             {
+                GetComponent<UIManager>().GameOver(); //Game Over Screen appears
                 //Deactivates all attached components
                 foreach(Behaviour component in components)
                     component.enabled = false;
@@ -37,7 +38,6 @@ public class Health : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     public void AddHealth(float _value)
     {
         currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);

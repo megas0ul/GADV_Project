@@ -45,7 +45,7 @@ public class MeleeEnemy : MonoBehaviour
     }
 
     private bool PlayerInSight()
-    {
+    {//Uses raycasting to detect if the player is in front of the Enemy
         RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
             new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
             0, Vector2.left, 0, playerLayer);
@@ -57,7 +57,7 @@ public class MeleeEnemy : MonoBehaviour
         return hit.collider != null;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos() //Using gizmo to create a short attack range/hitbox that I can adjust the distance and size of.
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance, 

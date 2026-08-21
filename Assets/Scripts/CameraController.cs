@@ -15,4 +15,9 @@ public class CameraController : MonoBehaviour
     {
         currentPosX = _newRoom.position.x;
     }
+
+    public void MoveToSpawn(Transform _spawnRoom)
+    {
+        currentPosX =_spawnRoom.position.x;
+    }
 }

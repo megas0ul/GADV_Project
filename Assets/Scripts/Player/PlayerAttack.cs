@@ -7,7 +7,6 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]private GameObject[] projectiles;
     private PlayerMovement playerMovement;
     private float cooldownTimer = Mathf.Infinity; //Any big number can be used for this
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();

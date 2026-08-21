@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]private float wallJumpCooldown = 0.2f;
     private Health playerHealth;
     private PlayerRespawn playerRespawn;
+    private UIManager uiManager;
+    [SerializeField]private Transform spawnRoom;
+    [SerializeField]private Transform spawnPoint;
     private float horizontalInput;
         
     private void Awake()    
@@ -20,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         playerHealth = GetComponent<Health>();
         playerRespawn = GetComponent<PlayerRespawn>();
+
+        uiManager = FindAnyObjectByType<UIManager>();
     }
 
     // Update is called once per frame
@@ -77,9 +82,26 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Trap"))
         {
-            playerHealth.TakeDamage(1);         
+            transform.position = new Vector2(-7f, -3.55f); //Teleports player to start
+            playerHealth.TakeDamage(1);
+            
+            Camera.main.GetComponent<CameraController>().MoveToSpawn(spawnRoom);          
         }
+        if (other.gameObject.CompareTag("Finish")) //Plays Game Win Screen when reach finish flag
+        {
+            uiManager.GameVictory();
+        }
+        if (playerHealth.currentHealth <= 0) //Shows Game Over screen when health reaches 0
+        {
+            uiManager.GameOver();
+        }
+        
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "GravityPad")
+            body.gravityScale = -body.gravityScale;
+    }    
 
     private bool isGrounded()//Check if player is on the ground
     {
