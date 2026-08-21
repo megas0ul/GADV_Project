@@ -97,10 +97,11 @@ public class PlayerMovement : MonoBehaviour
         }
         
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision) //Reverses gravity when come in contact with pad
     {
         if (collision.gameObject.tag == "GravityPad")
-            body.gravityScale = -body.gravityScale;
+            Physics.gravity = new Vector3 (0, -2, 0);
+            transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
     }    
 
     private bool isGrounded()//Check if player is on the ground

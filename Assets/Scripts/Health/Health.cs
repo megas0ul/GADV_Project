@@ -28,12 +28,12 @@ public class Health : MonoBehaviour
         {
             if (!dead)
             {
-                GetComponent<UIManager>().GameOver(); //Game Over Screen appears
                 //Deactivates all attached components
                 foreach(Behaviour component in components)
                     component.enabled = false;
                 Deactivate();
                 dead = true;
+                GetComponent<UIManager>().GameOver(); //Game Over Screen appears
             }
         }
     }
